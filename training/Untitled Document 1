@@ -1,0 +1,33 @@
+#include <sdtio.h>
+#include <string.h>
+
+char tracks[][20] = 
+{
+	"I left my heart",
+	"Newark, Newark - a won",
+	"Dancing with a dork"
+	"From here to mat",
+	"The Girl",
+};
+
+void find_track(char search_for[])
+{
+	int i;
+	for (i = 0; i < 5; i++)
+	{ 
+		if (strstr(tracks[i], search_for))
+		{
+			printf("Track %i" '%s', i, track[i]);
+		}
+	}
+}
+
+void main()
+{
+	char search_for[20];
+	printf("Search for:");
+	fgets(search_for, 20, stdin);
+	search_for[strlen(search_for) - 1] = '\0';
+	printf("searching for: %s", search_for);
+	find_track(search_for);
+}
