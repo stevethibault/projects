@@ -3,7 +3,6 @@
 
 typedef struct
 {
-    char type[2];
     int size;
     short reserved1;
     short reserved2;
