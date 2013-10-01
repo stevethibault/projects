@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <memory.h>
 #include <stdlib.h>
+#include <SDL.h>
+#include <
 #include "image.h"
 
-void image_load_bmp(char *filename)
+image *image_load_bmp(char *filename)
 {
     FILE *f;
     BITMAPFILEINFOHEADER file_info_header;
@@ -48,26 +50,56 @@ void image_load_bmp(char *filename)
     fseek(f, file_info_header.offbytes, SEEK_SET);
 
 
-    pixels = (pixel *)malloc((size_t)image_header.width * image_header.height);
-    memset(pixels, 0, image_header.width * image_header.height);
+    im.width = image_header.width;
+    im.height = image_header.height;
+    im.data = (pixel *)malloc((size_t)image_header.width * image_header.height);
+    memset(im.data, 0, image_header.width * image_header.height);
 
-    if (fread(image.data, sizeof(pixel), image_header.width * image_header.height, f) != image_header.width * image_header.height)
+    if (fread(im.data, sizeof(pixel), image_header.width * image_header.height, f) != image_header.width * image_header.height)
     {
         fprintf(stderr, "Error reading image pixels %s\n", filename);
     }
 
     fclose(f);
+
+    return &im;
 }
+
+// Globals
+SDL_Surface *demo_screen;
 
 int main(int argc, char **argv)
 {
-    if (argc != 2)
+    SDL_Event event;
+    int active = 1;
+
+    SDL_Init(SDL_INIT_VIDEO);
+    SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32);
+
+    demo_screen = SDL_SetVideoMode(320, 240, 0, SDL_HWSURFACE | SDL_OPENGL);
+
+    if (!demo_screen == NULL)
     {
-        printf("Usage: imageinfo filename");
-        return 1;
+        fprintf(stderr, "Could not set video mode: %s\n", SDL_GetError());
     }
 
-    image_load_bmp(argv[1]);
+    while (active)
+    {
+        while (SDL_PollEvent(&event))
+        {
+            if (event.type == SDL_QUIT)
+            {
+                active = 0;
+            }
+        }
+    }
 
+    SDL_Quit();
     return 0;
+
 }
