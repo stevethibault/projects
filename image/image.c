@@ -2,7 +2,7 @@
 #include <memory.h>
 #include <stdlib.h>
 #include <SDL.h>
-#include <
+#include <gl.h>
 #include "image.h"
 
 image *image_load_bmp(char *filename)
