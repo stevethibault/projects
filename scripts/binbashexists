@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ -f /bin ]; then
+    echo "file /bin exists by test -f"
+fi
+
+if [ -d /bin ]; then
+    echo "/bin is a directory"
+else
+    echo "/bin is NOT a directory"
+fi
+
+exit 0
