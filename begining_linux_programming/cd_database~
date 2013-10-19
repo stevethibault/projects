@@ -1,0 +1,35 @@
+#!/bin/bash
+
+menu_choice=""
+current_cd=""
+title_file="title.cdb"
+tracks_file="tracks.cdb"
+temp_file=/tmp/cdb.$$
+trap 'rm -f $temp_file' EXIT
+
+get_return()
+{
+	echo -e "Press return \c"
+	read x
+	return 0
+}
+
+get_confirm()
+{
+	echo -e "Are you sure? \c"
+	while true
+	do
+		read x
+		case "$x" in
+			y | yes | Y | Yes | YES )
+				return 0;;
+			n | no | N | No | NO )
+				echo
+				echo "Cancelled"
+				return 1;;
+			*)
+		esac
+	done
+}
+
+
