@@ -69,19 +69,19 @@ add_record_tracks()
 	echo "Enter track information for this CD"
 	echo "When no more tracks enter q"
 	cdtrack=1
-	cdtitle=""
-	while [ "$cdtitle" != "q" ]
+	cdttitle=""
+	while [ "$cdttitle" != "q" ]
 	do
 		echo -e "Track $cdtrack, track title? \c"
 		read tmp
-		cdtitle=${tmp%%,*}
-		if [ "$tmp" != "$cdtitle" ]; then
+		cdttitle=${tmp%%,*}
+		if [ "$tmp" != "$cdttitle" ]; then
 			echo "Sorry, no commas allowed"
 			continue
 		fi
-		if [ -n "$cdtitle" ] ; then
-			if [ "$cdtitle" != "q" ]; then
-				insert_track $cdcatnum,$cdtrack,$cdtitle
+		if [ -n "$cdttitle" ] ; then
+			if [ "$cdttitle" != "q" ]; then
+				insert_track $cdcatnum,$cdtrack,$cdttitle
 			fi
 		else
 			cdtrack=$((cdtrack-1))
@@ -124,7 +124,7 @@ add_records()
 
 find_cd()
 {
-    if [ "$1" = "n"]; then
+    if [ "$1" = "n" ]; then
         asklist=n
     else
         asklist=y
@@ -240,7 +240,7 @@ remove_records()
     fi
     return
 }
-
+I care
 list_tracks()
 {
     if [ "$cdcatnum" = "" ]; then
@@ -248,8 +248,8 @@ list_tracks()
         return
     else
         grep "^${cdcatnum}," $tracks_file > $temp_file
-        num_tracks={wc -l $temp_file}
-        if [ "$num_tracks" = "0"]; then
+        num_tracks=$(wc -l $temp_file)
+        if [ "$num_track" = "0" ]; then
             echo No tracks found for $cdtitle
         else
             {
