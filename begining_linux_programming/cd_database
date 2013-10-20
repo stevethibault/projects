@@ -86,6 +86,103 @@ add_record_tracks()
 		else
 			cdtrack=$((cdtrack-1))
 		fi
-		cdtrack=$((cdtrack-1))
+	{	cdtrack=$((cdtrack-1))
 	done
 }
+
+add_records()
+{
+	echo -e "Enter catalog name \c"
+	read tmp
+	cdcatnum=${tmp%%,*}
+
+	echo -e "Enter title \c"
+	read tmp
+	cdtitle=${tmp%%,*}
+
+	echo -e "Enter type \c"
+	reat tmp
+	cdtype=${tmp%%,*}
+
+	echo -e "Enter artist/composer \c"
+	read tmp
+	cdac=${tmp%%,*}
+
+	echo "About to add the new entry: "
+	echo "$cdcatnum $cdtitle $cdtype $cdac"
+
+	if get_confirm ; then
+		insert_title $cdcatnum,$cdtitle,$cdtype,$cdac
+		add_record_tracks
+	else
+		remove_records
+	fi
+
+	return
+}
+
+
+find_cd()
+{
+    if [ "$1" = "n"]; then
+        asklist=n
+    else
+        asklist=y
+    fi
+
+    cdcatnum=""
+    echo -e "Enter a string to search for in the CD titles \c"
+    read searchstr
+    if [ "$searchstr" = "" ]; then
+        return 0
+    fi
+
+    grep "$searchstr" $title_file > $temp_file
+
+    set $(wc -l $temp_file)
+    linesfound=$1
+
+    case "$linesfound" in
+        0)  echo "Sorry, nothing found."
+            get_return
+            return 0
+            ;;
+        1)  ;;
+        2)  echo "Sorry, not unique."
+            echo "Found the following"
+            cat $temp_file
+            get_return
+            return 0
+    esac
+
+    IFS=","
+    read cdcatnum cdtitle cdtype cdac < $temp_file
+    IFS=" "
+
+    if [ -z "$cdcatnum" ]; then
+        echo "Sorry, could not extract catalog field from $temp_file"
+        get_return
+        return 0
+    fi
+
+    echo
+    echo Catalog number: $cdcatnum
+    echo Title: $cdtitle
+    echo Artist/Composer: $cdac
+    echo
+
+    get_return
+
+    if [ "$asklist" = "y" ]; then
+        echo -e "View tracks for this CD? \c"
+        read x
+        if [ "$x" = "y" ]; then
+            echo
+            list_tracks
+            echo
+        fi
+    fi
+
+    return 1
+}
+
