@@ -1,0 +1,26 @@
+src/RestServer.cpp:27:1: error: expected class-name before ‘{’ token
+ {
+ ^
+src/RestServer.cpp:54:1: error: expected ‘;’ after class definition
+ }
+ ^
+src/RestServer.cpp: In member function ‘void RestRequestHandler::handleRequest(Poco::Net::HTTPServerRequest&, Poco::Net::HTTPServerResponse&)’:
+src/RestServer.cpp:45:13: error: expected ‘,’ or ‘;’ before ‘ostr’
+             ostr << "<html><head><title>RestServer powered by Patternsoft Inc.";
+             ^
+src/RestServer.cpp: At global scope:
+src/RestServer.cpp:77:1: error: expected ‘;’ after class definition
+ }
+ ^
+src/RestServer.cpp: In member function ‘virtual Poco::Net::HTTPRequestHandler* RestRequestFactory::createRequestHandler(const Poco::Net::HTTPServerRequest&)’:
+src/RestServer.cpp:67:54: error: cannot convert ‘RestRequestHandler*’ to ‘Poco::Net::HTTPRequestHandler*’ in return
+                 return new RestRequestHandler(_format);
+                                                      ^
+src/RestServer.cpp: In member function ‘virtual int RestServer::main(const std::vector<std::basic_string<char> >&)’:
+src/RestServer.cpp:133:35: error: expected type-specifier before ‘TimeRequestHandlerFactory’
+             HTTPServer server(new TimeRequestHandlerFactory(format), serverSocket,
+                                   ^
+src/RestServer.cpp:136:13: error: ‘srv’ was not declared in this scope
+             srv.stop();
+             ^
+make: *** [/home/steve/libraries/poco-1.4.6p2-all/home/steve/projects/rest_server/obj/Linux/x86_64/debug_shared/RestServer.o] Error 1
